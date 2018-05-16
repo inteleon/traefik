@@ -112,7 +112,7 @@ Although traefik will connect directly to the endpoints (pods), it still checks 
 If the service port defined in the ingress spec is 443, then the backend communication protocol is assumed to be TLS, and will connect via TLS automatically.
 
 !!! note
-    Please note that by enabling TLS communication between traefik and your pods, you will have to have trusted certificates that have the proper trust chain and IP subject name. 
+    Please note that by enabling TLS communication between traefik and your pods, you will have to have trusted certificates that have the proper trust chain and IP subject name.
     If this is not an option, you may need to skip TLS certificate verification.
     See the [insecureSkipVerify](/configuration/commons/#main-section) setting for more details.
 
@@ -137,7 +137,7 @@ The following general annotations are applicable on the Ingress object:
 | `traefik.ingress.kubernetes.io/redirect-replacement: http://mydomain/$1`        | Redirect to another URL for that frontend. Must be set with `traefik.ingress.kubernetes.io/redirect-regex`.                                     |
 | `traefik.ingress.kubernetes.io/rewrite-target: /users`                          | Replaces each matched Ingress path with the specified one, and adds the old path to the `X-Replaced-Path` header.                               |
 | `traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip`                      | Override the default frontend rule type. Default: `PathPrefix`.                                                                                 |
-| `traefik.ingress.kubernetes.io/whitelist-source-range: "1.2.3.0/24, fe80::/16"` | A comma-separated list of IP ranges permitted for access. all source IPs are permitted if the list is empty or a single range is ill-formatted. |
+| `traefik.ingress.kubernetes.io/whitelist-source-range: "1.2.3.0/24, fe80::/16"` | A comma-separated list of IP ranges permitted for access. all source IPs are permitted if the list is empty or a single range is ill-formatted. Please note, you may have to set `service.spec.externalTrafficPolicy` to the value `Local` to preserve the source IP of the request for filtering. Please see [this link](https://kubernetes.io/docs/tutorials/services/source-ip/) for more information.|
 | `traefik.ingress.kubernetes.io/app-root: "/index.html"`                         | Redirects all requests for `/` to the defined path. (4)                                                                                         |
 
 <1> `traefik.ingress.kubernetes.io/error-pages` example:
@@ -218,24 +218,25 @@ The following security annotations are applicable on the Ingress object:
 |                        Annotation                         |                                                                                             Description                                                                                             |
 | ----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `ingress.kubernetes.io/allowed-hosts: EXPR`               | Provides a list of allowed hosts that requests will be processed. Format: `Host1,Host2`                                                                                                             |
-| `ingress.kubernetes.io/proxy-headers: EXPR`               | Provides a list of headers that the proxied hostname may be stored. Format:  `HEADER1,HEADER2`                                                                                                      |
-| `ingress.kubernetes.io/ssl-redirect: "true"`              | Forces the frontend to redirect to SSL if a non-SSL request is sent.                                                                                                                                |
-| `ingress.kubernetes.io/ssl-temporary-redirect: "true"`    | Forces the frontend to redirect to SSL if a non-SSL request is sent, but by sending a 302 instead of a 301.                                                                                         |
-| `ingress.kubernetes.io/ssl-host: HOST`                    | This setting configures the hostname that redirects will be based on. Default is "", which is the same host as the request.                                                                         |
-| `ingress.kubernetes.io/ssl-proxy-headers: EXPR`           | Header combinations that would signify a proper SSL Request (Such as `X-Forwarded-For:https`). Format: <code>HEADER:value&vert;&vert;HEADER2:value2</code>                                          |
+| `ingress.kubernetes.io/browser-xss-filter: "true"`        | Adds the X-XSS-Protection header with the value `1; mode=block`.                                                                                                                                    |
+| `ingress.kubernetes.io/content-security-policy: VALUE`    | Adds CSP Header with the custom value.                                                                                                                                                              |
+| `ingress.kubernetes.io/content-type-nosniff: "true"`      | Adds the `X-Content-Type-Options` header with the value `nosniff`.                                                                                                                                  |
+| `ingress.kubernetes.io/custom-browser-xss-value: VALUE`   | Set custom value for X-XSS-Protection header. This overrides the BrowserXssFilter option.                                                                                                           |
+| `ingress.kubernetes.io/custom-frame-options-value: VALUE` | Overrides the `X-Frame-Options` header with the custom value.                                                                                                                                       |
+| `ingress.kubernetes.io/force-hsts: "false"`               | Adds the STS  header to non-SSL requests.                                                                                                                                                           |
+| `ingress.kubernetes.io/frame-deny: "false"`               | Adds the `X-Frame-Options` header with the value of `DENY`.                                                                                                                                         |
 | `ingress.kubernetes.io/hsts-max-age: "315360000"`         | Sets the max-age of the HSTS header.                                                                                                                                                                |
 | `ingress.kubernetes.io/hsts-include-subdomains: "true"`   | Adds the IncludeSubdomains section of the STS  header.                                                                                                                                              |
 | `ingress.kubernetes.io/hsts-preload: "true"`              | Adds the preload flag to the HSTS  header.                                                                                                                                                          |
-| `ingress.kubernetes.io/force-hsts: "false"`               | Adds the STS  header to non-SSL requests.                                                                                                                                                           |
-| `ingress.kubernetes.io/frame-deny: "false"`               | Adds the `X-Frame-Options` header with the value of `DENY`.                                                                                                                                         |
-| `ingress.kubernetes.io/custom-frame-options-value: VALUE` | Overrides the `X-Frame-Options` header with the custom value.                                                                                                                                       |
-| `ingress.kubernetes.io/content-type-nosniff: "true"`      | Adds the `X-Content-Type-Options` header with the value `nosniff`.                                                                                                                                  |
-| `ingress.kubernetes.io/browser-xss-filter: "true"`        | Adds the X-XSS-Protection header with the value `1; mode=block`.                                                                                                                                    |
-| `ingress.kubernetes.io/custom-browser-xss-value: VALUE`   | Set custom value for X-XSS-Protection header. This overrides the BrowserXssFilter option.                                                                                                           |
-| `ingress.kubernetes.io/content-security-policy: VALUE`    | Adds CSP Header with the custom value.                                                                                                                                                              |
+| `ingress.kubernetes.io/is-development: "false"`           | This will cause the `AllowedHosts`, `SSLRedirect`, and `STSSeconds`/`STSIncludeSubdomains` options to be ignored during development.<br>When deploying to production, be sure to set this to false. |
+| `ingress.kubernetes.io/proxy-headers: EXPR`               | Provides a list of headers that the proxied hostname may be stored. Format:  `HEADER1,HEADER2`                                                                                                      |
 | `ingress.kubernetes.io/public-key: VALUE`                 | Adds pinned HTST public key header.                                                                                                                                                                 |
 | `ingress.kubernetes.io/referrer-policy: VALUE`            | Adds referrer policy  header.                                                                                                                                                                       |
-| `ingress.kubernetes.io/is-development: "false"`           | This will cause the `AllowedHosts`, `SSLRedirect`, and `STSSeconds`/`STSIncludeSubdomains` options to be ignored during development.<br>When deploying to production, be sure to set this to false. |
+| `ingress.kubernetes.io/ssl-redirect: "true"`              | Forces the frontend to redirect to SSL if a non-SSL request is sent.                                                                                                                                |
+| `ingress.kubernetes.io/ssl-temporary-redirect: "true"`    | Forces the frontend to redirect to SSL if a non-SSL request is sent, but by sending a 302 instead of a 301.                                                                                         |
+| `ingress.kubernetes.io/ssl-host: HOST`                    | This setting configures the hostname that redirects will be based on. Default is "", which is the same host as the request.                                                                         |
+| `ingress.kubernetes.io/ssl-force-host: "true"`            | If `SSLForceHost` is `true` and `SSLHost` is set, requests will be forced to use `SSLHost` even the ones that are already using SSL. Default is false.                                              |
+| `ingress.kubernetes.io/ssl-proxy-headers: EXPR`           | Header combinations that would signify a proper SSL Request (Such as `X-Forwarded-For:https`). Format: <code>HEADER:value&vert;&vert;HEADER2:value2</code>                                          |
 
 ### Authentication
 
@@ -261,4 +262,4 @@ More information are available in the  [User Guide](/user-guide/kubernetes/#add-
 
 !!! note
     Only TLS certificates provided by users can be stored in Kubernetes Secrets.
-    [Let's Encrypt](https://letsencrypt.org) certificates cannot be managed in Kubernets Secrets yet. 
+    [Let's Encrypt](https://letsencrypt.org) certificates cannot be managed in Kubernets Secrets yet.

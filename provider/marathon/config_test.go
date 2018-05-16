@@ -173,6 +173,7 @@ func TestBuildConfiguration(t *testing.T) {
 					withLabel(label.TraefikBackend, "foobar"),
 
 					withLabel(label.TraefikBackendCircuitBreakerExpression, "NetworkErrorRatio() > 0.5"),
+					withLabel(label.TraefikBackendHealthCheckScheme, "http"),
 					withLabel(label.TraefikBackendHealthCheckPath, "/health"),
 					withLabel(label.TraefikBackendHealthCheckPort, "880"),
 					withLabel(label.TraefikBackendHealthCheckInterval, "6"),
@@ -209,6 +210,7 @@ func TestBuildConfiguration(t *testing.T) {
 					withLabel(label.TraefikFrontendSSLProxyHeaders, "Access-Control-Allow-Methods:POST,GET,OPTIONS || Content-type: application/json; charset=utf-8"),
 					withLabel(label.TraefikFrontendAllowedHosts, "foo,bar,bor"),
 					withLabel(label.TraefikFrontendHostsProxyHeaders, "foo,bar,bor"),
+					withLabel(label.TraefikFrontendSSLForceHost, "true"),
 					withLabel(label.TraefikFrontendSSLHost, "foo"),
 					withLabel(label.TraefikFrontendCustomFrameOptionsValue, "foo"),
 					withLabel(label.TraefikFrontendContentSecurityPolicy, "foo"),
@@ -285,6 +287,7 @@ func TestBuildConfiguration(t *testing.T) {
 						},
 						SSLRedirect:          true,
 						SSLTemporaryRedirect: true,
+						SSLForceHost:         true,
 						SSLHost:              "foo",
 						SSLProxyHeaders: map[string]string{
 							"Access-Control-Allow-Methods": "POST,GET,OPTIONS",
@@ -365,6 +368,7 @@ func TestBuildConfiguration(t *testing.T) {
 						ExtractorFunc: "client.ip",
 					},
 					HealthCheck: &types.HealthCheck{
+						Scheme:   "http",
 						Path:     "/health",
 						Port:     880,
 						Interval: "6",
@@ -581,6 +585,7 @@ func TestBuildConfigurationSegments(t *testing.T) {
 					withSegmentLabel(label.TraefikFrontendSSLProxyHeaders, "Access-Control-Allow-Methods:POST,GET,OPTIONS || Content-type: application/json; charset=utf-8", "containous"),
 					withSegmentLabel(label.TraefikFrontendAllowedHosts, "foo,bar,bor", "containous"),
 					withSegmentLabel(label.TraefikFrontendHostsProxyHeaders, "foo,bar,bor", "containous"),
+					withSegmentLabel(label.TraefikFrontendSSLForceHost, "true", "containous"),
 					withSegmentLabel(label.TraefikFrontendSSLHost, "foo", "containous"),
 					withSegmentLabel(label.TraefikFrontendCustomFrameOptionsValue, "foo", "containous"),
 					withSegmentLabel(label.TraefikFrontendContentSecurityPolicy, "foo", "containous"),
@@ -657,6 +662,7 @@ func TestBuildConfigurationSegments(t *testing.T) {
 						},
 						SSLRedirect:          true,
 						SSLTemporaryRedirect: true,
+						SSLForceHost:         true,
 						SSLHost:              "foo",
 						SSLProxyHeaders: map[string]string{
 							"Access-Control-Allow-Methods": "POST,GET,OPTIONS",

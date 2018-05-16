@@ -135,9 +135,12 @@ func TestBuildConfiguration(t *testing.T) {
 							label.TraefikBackend: aws.String("foobar"),
 
 							label.TraefikBackendCircuitBreakerExpression:         aws.String("NetworkErrorRatio() > 0.5"),
+							label.TraefikBackendHealthCheckScheme:                aws.String("http"),
 							label.TraefikBackendHealthCheckPath:                  aws.String("/health"),
 							label.TraefikBackendHealthCheckPort:                  aws.String("880"),
 							label.TraefikBackendHealthCheckInterval:              aws.String("6"),
+							label.TraefikBackendHealthCheckHostname:              aws.String("foo.com"),
+							label.TraefikBackendHealthCheckHeaders:               aws.String("Foo:bar || Bar:foo"),
 							label.TraefikBackendLoadBalancerMethod:               aws.String("drr"),
 							label.TraefikBackendLoadBalancerSticky:               aws.String("true"),
 							label.TraefikBackendLoadBalancerStickiness:           aws.String("true"),
@@ -175,6 +178,7 @@ func TestBuildConfiguration(t *testing.T) {
 							label.TraefikFrontendReferrerPolicy:          aws.String("foo"),
 							label.TraefikFrontendCustomBrowserXSSValue:   aws.String("foo"),
 							label.TraefikFrontendSTSSeconds:              aws.String("666"),
+							label.TraefikFrontendSSLForceHost:            aws.String("true"),
 							label.TraefikFrontendSSLRedirect:             aws.String("true"),
 							label.TraefikFrontendSSLTemporaryRedirect:    aws.String("true"),
 							label.TraefikFrontendSTSIncludeSubdomains:    aws.String("true"),
@@ -237,9 +241,15 @@ func TestBuildConfiguration(t *testing.T) {
 							ExtractorFunc: "client.ip",
 						},
 						HealthCheck: &types.HealthCheck{
+							Scheme:   "http",
 							Path:     "/health",
 							Port:     880,
 							Interval: "6",
+							Hostname: "foo.com",
+							Headers: map[string]string{
+								"Foo": "bar",
+								"Bar": "foo",
+							},
 						},
 						Buffering: &types.Buffering{
 							MaxResponseBodyBytes: 10485760,
@@ -294,6 +304,7 @@ func TestBuildConfiguration(t *testing.T) {
 							},
 							SSLRedirect:          true,
 							SSLTemporaryRedirect: true,
+							SSLForceHost:         true,
 							SSLHost:              "foo",
 							SSLProxyHeaders: map[string]string{
 								"Access-Control-Allow-Methods": "POST,GET,OPTIONS",

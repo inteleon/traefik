@@ -12,7 +12,7 @@
 
 Træfik is a modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
 Træfik integrates with your existing infrastructure components ([Docker](https://www.docker.com/), [Swarm mode](https://docs.docker.com/engine/swarm/), [Kubernetes](https://kubernetes.io), [Marathon](https://mesosphere.github.io/marathon/), [Consul](https://www.consul.io/), [Etcd](https://coreos.com/etcd/), [Rancher](https://rancher.com), [Amazon ECS](https://aws.amazon.com/ecs), ...) and configures itself automatically and dynamically.
-Telling Træfik where your orchestrator is could be the _only_ configuration step you need to do.
+Pointing Træfik at your orchestrator should be the _only_ configuration step you need.
 
 ## Overview
 
@@ -77,13 +77,13 @@ version: '3'
 
 services:
   reverse-proxy:
-    image: traefik #The official Traefik docker image
-    command: --api --docker #Enables the web UI and tells Træfik to listen to docker
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Træfik to listen to docker
     ports:
-      - "80:80"     #The HTTP port
-      - "8080:8080" #The Web UI (enabled by --api)
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock #So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 ```
 
 **That's it. Now you can launch Træfik!**
@@ -105,7 +105,7 @@ Edit your `docker-compose.yml` file and add the following at the end of your fil
 ```yaml
 # ...
   whoami:
-    image: emilevauge/whoami #A container that exposes an API to show it's IP address
+    image: emilevauge/whoami # A container that exposes an API to show its IP address
     labels:
       - "traefik.frontend.rule=Host:whoami.docker.localhost"
 ```
