@@ -3,12 +3,9 @@
 
 [[projects]]
   name = "cloud.google.com/go"
-  packages = [
-    "compute/metadata",
-    "internal"
-  ]
-  revision = "2e6a95edb1071d750f6d7db777bf66cd2997af6c"
-  version = "v0.7.0"
+  packages = ["compute/metadata"]
+  revision = "056a55f54a6cc77b440b31a56a5e7c3982d32811"
+  version = "v0.22.0"
 
 [[projects]]
   branch = "master"
@@ -192,6 +189,7 @@
     "aws/request",
     "aws/session",
     "aws/signer/v4",
+    "internal/sdkio",
     "internal/sdkrand",
     "internal/shareddefaults",
     "private/protocol",
@@ -212,8 +210,8 @@
     "service/route53",
     "service/sts"
   ]
-  revision = "f9a6880d84e16e2a37055793e17164a228d637f4"
-  version = "v1.13.1"
+  revision = "fad131ddc707880428615dc8bc1587b55fb46d74"
+  version = "v1.13.54"
 
 [[projects]]
   branch = "master"
@@ -286,8 +284,8 @@
     "pkg/types",
     "version"
   ]
-  revision = "f1d7dd87da3e8feab4aaf675b8e29c6a5ed5f58b"
-  version = "v3.2.9"
+  revision = "70c8726202dd91e482fb4029fd14af1d4ed1d5af"
+  version = "v3.3.5"
 
 [[projects]]
   name = "github.com/coreos/go-semver"
@@ -320,9 +318,10 @@
   version = "v3.2.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/dnsimple/dnsimple-go"
   packages = ["dnsimple"]
-  revision = "f2d9b723cc9547d182e24ac2e527ae25d25fc93f"
+  revision = "bbe1a2c87affea187478e24d3aea3cac25f870b3"
 
 [[projects]]
   name = "github.com/docker/cli"
@@ -607,7 +606,9 @@
 [[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
+    "gogoproto",
     "proto",
+    "protoc-gen-gogo/descriptor",
     "sortkeys"
   ]
   revision = "909568be09de550ed094403c2bf8a261b5bb730a"
@@ -627,7 +628,8 @@
     "ptypes/duration",
     "ptypes/timestamp"
   ]
-  revision = "4bd1920723d7b7c925de087aa32e2187708897f7"
+  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
+  version = "v1.1.0"
 
 [[projects]]
   branch = "master"
@@ -656,11 +658,6 @@
   name = "github.com/google/gofuzz"
   packages = ["."]
   revision = "bbcb9da2d746f8bdbd6a936686a0a6067ada0ec5"
-
-[[projects]]
-  name = "github.com/googleapis/gax-go"
-  packages = ["."]
-  revision = "9af46dd5a1713e8b5cd71106287eba3cefdde50b"
 
 [[projects]]
   name = "github.com/googleapis/gnostic"
@@ -761,6 +758,7 @@
   version = "v1.3.7"
 
 [[projects]]
+  branch = "master"
   name = "github.com/jjcollinge/servicefabric"
   packages = ["."]
   revision = "8eebe170fa1ba25d3dfb928b3f86a7313b13b9fe"
@@ -991,9 +989,10 @@
   revision = "1f5c07e90700ae93ddcba0c7af7d9c7201646ccc"
 
 [[projects]]
+  branch = "master"
   name = "github.com/ovh/go-ovh"
   packages = ["ovh"]
-  revision = "4b1fea467323b74c5f462f0947f402b428ca0626"
+  revision = "91b7eb631d2eced3e706932a0b36ee8b5ee22e92"
 
 [[projects]]
   branch = "master"
@@ -1178,7 +1177,8 @@
 [[projects]]
   name = "github.com/ugorji/go"
   packages = ["codec"]
-  revision = "ea9cd21fa0bc41ee4bdd50ac7ed8cbc7ea2ed960"
+  revision = "b4c50a2b199d93b13dc15e78929cfb23bfdf21ab"
+  version = "v1.1.1"
 
 [[projects]]
   name = "github.com/unrolled/render"
@@ -1215,7 +1215,7 @@
     "roundrobin",
     "utils"
   ]
-  revision = "6956548a7fa4272adeadf828455109c53933ea86"
+  revision = "d5b73186eed4aa34b52748699ad19e90f61d4059"
 
 [[projects]]
   name = "github.com/vulcand/predicate"
@@ -1241,10 +1241,11 @@
   revision = "0c8571ac0ce161a5feb57375a9cdf148c98c0f70"
 
 [[projects]]
-  branch = "containous-fork"
+  branch = "master"
   name = "github.com/xenolf/lego"
   packages = [
-    "acmev2",
+    "acme",
+    "log",
     "providers/dns",
     "providers/dns/auroradns",
     "providers/dns/azure",
@@ -1262,9 +1263,9 @@
     "providers/dns/fastdns",
     "providers/dns/gandi",
     "providers/dns/gandiv5",
+    "providers/dns/gcloud",
     "providers/dns/glesys",
     "providers/dns/godaddy",
-    "providers/dns/googlecloud",
     "providers/dns/lightsail",
     "providers/dns/linode",
     "providers/dns/namecheap",
@@ -1278,8 +1279,7 @@
     "providers/dns/route53",
     "providers/dns/vultr"
   ]
-  revision = "3d653ee2ee38f1d71beb5f09b37b23344eff0ab3"
-  source = "github.com/containous/lego"
+  revision = "7fedfd1388f016c7ca7ed92a7f2024d06a7e20d8"
 
 [[projects]]
   branch = "master"
@@ -1319,6 +1319,7 @@
   revision = "22ae77b79946ea320088417e4d50825671d82d57"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
@@ -1327,7 +1328,7 @@
     "jws",
     "jwt"
   ]
-  revision = "7fdf09982454086d5570c7db3e11f360194830ca"
+  revision = "ec22f46f877b4505e0117eeaab541714644fdd28"
 
 [[projects]]
   branch = "master"
@@ -1366,6 +1367,7 @@
   revision = "8be79e1e0910c292df4e79c241bb7e8f7e725959"
 
 [[projects]]
+  branch = "master"
   name = "google.golang.org/api"
   packages = [
     "dns/v1",
@@ -1373,7 +1375,7 @@
     "googleapi",
     "googleapi/internal/uritemplates"
   ]
-  revision = "1575df15c1bb8b18ad4d9bc5ca495cc85b0764fe"
+  revision = "de943baf05a022a8f921b544b7827bacaba1aed5"
 
 [[projects]]
   name = "google.golang.org/appengine"
@@ -1400,23 +1402,33 @@
   name = "google.golang.org/grpc"
   packages = [
     ".",
+    "balancer",
+    "balancer/base",
+    "balancer/roundrobin",
+    "channelz",
     "codes",
     "connectivity",
     "credentials",
-    "grpclb/grpc_lb_v1",
+    "encoding",
+    "encoding/proto",
+    "grpclb/grpc_lb_v1/messages",
     "grpclog",
+    "health/grpc_health_v1",
     "internal",
     "keepalive",
     "metadata",
     "naming",
     "peer",
+    "resolver",
+    "resolver/dns",
+    "resolver/passthrough",
     "stats",
     "status",
     "tap",
     "transport"
   ]
-  revision = "b3ddf786825de56a4178401b7e174ee332173b66"
-  version = "v1.5.2"
+  revision = "41344da2231b913fa3d983840a57a6b1b7b631a1"
+  version = "v1.12.0"
 
 [[projects]]
   name = "gopkg.in/fsnotify.v1"
@@ -1444,6 +1456,7 @@
   revision = "cb884138e64c9a8bf5c7d6106d74b0fca082df0c"
 
 [[projects]]
+  branch = "v2"
   name = "gopkg.in/ns1/ns1-go.v2"
   packages = [
     "rest",
@@ -1453,7 +1466,7 @@
     "rest/model/filter",
     "rest/model/monitor"
   ]
-  revision = "c563826f4cbef9c11bebeb9f20a3f7afe9c1e2f4"
+  revision = "a5bcac82d3f637d3928d30476610891935b2d691"
 
 [[projects]]
   name = "gopkg.in/square/go-jose.v2"
@@ -1674,6 +1687,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "43f8acdb9c80004418ca3fd30c4c82f47589f96845fbaf2eaca5924b137eeed6"
+  inputs-digest = "f9bdfe14aca106f6bfc75da6f7282791c12c503b65581797bbb484566858a2f3"
   solver-name = "gps-cdcl"
   solver-version = 1

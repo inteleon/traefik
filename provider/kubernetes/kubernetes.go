@@ -6,8 +6,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"reflect"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
@@ -286,12 +288,11 @@ func (p *Provider) loadIngresses(k8sClient Client) (*types.Configuration, error)
 
 						if service.Spec.Type == "ExternalName" {
 							url := protocol + "://" + service.Spec.ExternalName
-							name := url
 							if port.Port != 443 && port.Port != 80 {
 								url = fmt.Sprintf("%s:%d", url, port.Port)
 							}
 
-							templateObjects.Backends[baseName].Servers[name] = types.Server{
+							templateObjects.Backends[baseName].Servers[url] = types.Server{
 								URL:    url,
 								Weight: label.DefaultWeight,
 							}
@@ -319,7 +320,7 @@ func (p *Provider) loadIngresses(k8sClient Client) (*types.Configuration, error)
 									continue
 								}
 								for _, address := range subset.Addresses {
-									url := fmt.Sprintf("%s://%s:%d", protocol, address.IP, endpointPort)
+									url := protocol + "://" + net.JoinHostPort(address.IP, strconv.FormatInt(int64(endpointPort), 10))
 									name := url
 									if address.TargetRef != nil && address.TargetRef.Name != "" {
 										name = address.TargetRef.Name

@@ -18,6 +18,7 @@ logLevel = "INFO"
   [accessLog.filters]
     statusCodes = ["200", "300-302"]
     retryAttempts = true
+    minDuration = "10ms"
 
   [accessLog.fields]
     defaultMode = "keep"
@@ -46,6 +47,7 @@ For more information about the CLI, see the documentation about [Traefik command
 --accessLog.format="json"
 --accessLog.filters.statusCodes="200,300-302"
 --accessLog.filters.retryAttempts="true"
+--accessLog.filters.minDuration="10ms"
 --accessLog.fields.defaultMode="keep"
 --accessLog.fields.names="Username=drop Hostname=drop"
 --accessLog.fields.headers.defaultMode="keep"
@@ -124,6 +126,20 @@ filePath = "/path/to/access.log"
 format = "json"
 ```
 
+To write the logs in async, specify `bufferingSize` as the format (must be >0):
+```toml
+[accessLog]
+filePath = "/path/to/access.log"
+# Buffering Size
+#
+# Optional
+# Default: 0
+#
+# Number of access log lines to process in a buffered way.
+#
+bufferingSize = 100
+```
+
 To filter logs you can specify a set of filters which are logically "OR-connected". Thus, specifying multiple filters will keep more access logs than specifying only one:
 ```toml
 [accessLog]
@@ -132,19 +148,26 @@ format = "json"
 
   [accessLog.filters]
 
-  # statusCodes keep access logs with status codes in the specified range
+  # statusCodes: keep access logs with status codes in the specified range
   #
   # Optional
   # Default: []
   #
   statusCodes = ["200", "300-302"]
 
-  # retryAttempts keep access logs when at least one retry happened
+  # retryAttempts: keep access logs when at least one retry happened
   #
   # Optional
   # Default: false
   #
   retryAttempts = true
+
+  # minDuration: keep access logs when request took longer than the specified duration
+  #
+  # Optional
+  # Default: 0
+  #
+  minDuration = "10ms"
 ```
 
 To customize logs format:
